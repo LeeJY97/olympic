@@ -1,58 +1,49 @@
 import { useState } from 'react'
 import './App.css'
+import CountryInputBox from './components/CountryInput'
 
-class Country {
-  constructor(name, g = 0, s = 0, b = 0) {
-    this.name = name;
-    this.g = g;
-    this.s = s;
-    this.b = b;
-  }
-}
 
 function App() {
   const [countries, setCountries] = useState([]);
+  const [countryInfo, setCountryInfo] = useState({
+    name: '',
+    gold: 0,
+    silver: 0,
+    bronze: 0,
+  });
 
-  const [name, setName] = useState("");
-  const [g, setG] = useState(0);
-  const [s, setS] = useState(0);
-  const [b, setB] = useState(0);
+  const updateInfo = (value, property) => {
+    const copyInfo = { ...countryInfo };
+    copyInfo[property] = value;
 
-  const updateName = (e) => {
-    setName(e.target.value);
-  }
-  const updateMedal = (e, setMedalState) => {
-    setMedalState(e.target.value);
+    setCountryInfo(copyInfo);
   }
 
   const addCountry = () => {
     const copyCountries = [...countries];
-    const country = new Country(name, g, s, b);
 
-    if (!checkInput('add', copyCountries, country)) { return; }
+    if (!checkInput('add', copyCountries, countryInfo)) { return; }
 
-    copyCountries.push(country);
-    copyCountries.sort((a, b) => b.g - a.g);
+    copyCountries.push(countryInfo);
+    copyCountries.sort((a, b) => b.gold - a.gold);
     setCountries(copyCountries);
     clearInput();
   }
 
   const updateCountry = () => {
-    const country = new Country(name, g, s, b);
-
-    if (!checkInput('update', [...countries], country)) { return; }
+    if (!checkInput('update', [...countries], countryInfo)) { return; }
 
     const copyCountries = [...countries].map(cur => {
 
-      if (cur.name === country.name) {
-        cur.g = country.g;
-        cur.s = country.s;
-        cur.b = country.b;
+      if (cur.name === countryInfo.name) {
+        cur.gold = countryInfo.gold;
+        cur.silver = countryInfo.silver;
+        cur.bronze = countryInfo.bronze;
       }
       return cur;
     })
 
-    copyCountries.sort((a, b) => b.g - a.g);
+    copyCountries.sort((a, b) => b.gold - a.gold);
     setCountries(copyCountries);
     clearInput();
   }
@@ -65,8 +56,9 @@ function App() {
     const duplicateName = filteredCountris[0]?.name;
 
 
+    if (!name) return alert('국가명 입력');
+
     if (type === 'add') {
-      if (!name) return alert('국가명 입력');
       if (duplicateName) return alert('나라가 겹침');
       if (!filterdMedal) return alert('메달 하나라도 입력');
     } else if (type === 'update') {
@@ -77,10 +69,12 @@ function App() {
   }
 
   const clearInput = () => {
-    setName("");
-    setG(0);
-    setS(0);
-    setB(0);
+    setCountryInfo({
+      name: '',
+      gold: 0,
+      silver: 0,
+      bronze: 0,
+    })
   }
 
   const removeCountry = (country) => {
@@ -95,20 +89,36 @@ function App() {
         <h2>2024 파리 올림픽</h2>
         <div className='input-container'>
           <div className='input-box'>
-            <p>국가명</p>
-            <input type="text" value={name} onChange={(e) => { updateName(e) }} />
+            <CountryInputBox
+              title={'국가명'}
+              type={'text'}
+              value={countryInfo.name}
+              onChange={(e) => { updateInfo(e.target.value, 'name') }}
+            />
           </div>
           <div className='input-box'>
-            <p>금</p>
-            <input type="number" value={g} onChange={(e) => { updateMedal(e, setG) }} />
+            <CountryInputBox
+              title={'금'}
+              type={'number'}
+              value={countryInfo.gold}
+              onChange={(e) => { updateInfo(e.target.value, 'gold') }}
+            />
           </div>
           <div className='input-box'>
-            <p>은</p>
-            <input type="number" value={s} onChange={(e) => { updateMedal(e, setS) }} />
+            <CountryInputBox
+              title={'은'}
+              type={'number'}
+              value={countryInfo.silver}
+              onChange={(e) => { updateInfo(e.target.value, 'silver') }}
+            />
           </div>
           <div className='input-box'>
-            <p>동</p>
-            <input type="number" value={b} onChange={(e) => { updateMedal(e, setB) }} />
+            <CountryInputBox
+              title={'동'}
+              type={'number'}
+              value={countryInfo.bronze}
+              onChange={(e) => { updateInfo(e.target.value, 'bronze') }}
+            />
           </div>
           <div className='input-box'>
             <button onClick={addCountry}>국가추가</button>
@@ -118,7 +128,10 @@ function App() {
         <div className='list-container'>
           {!countries.length && <Empty />}
           {(countries.length > 0 && <CountryHeader />)}
-          {countries.map(country => <List country={country} removeCountry={removeCountry} />)}
+          {countries.map(country => {
+            return <List country={country} removeCountry={removeCountry}
+            />
+          })}
         </div>
       </div>
     </>
@@ -144,23 +157,20 @@ const CountryHeader = () => {
     </div>
   )
 }
-
-
 const List = ({ country, removeCountry }) => {
-
   return (
     <div className='country-container'>
       <div className='info-box'>
         <p>{country.name}</p>
       </div>
       <div className='info-box'>
-        <p>{country.g}</p>
+        <p>{country.gold}</p>
       </div>
       <div className='info-box'>
-        <p>{country.s}</p>
+        <p>{country.silver}</p>
       </div>
       <div className='info-box'>
-        <p>{country.b}</p>
+        <p>{country.bronze}</p>
       </div>
       <div className='info-box'>
         <button onClick={(e) => removeCountry(country)}>삭제</button>
