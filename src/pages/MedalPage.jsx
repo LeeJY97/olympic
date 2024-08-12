@@ -18,21 +18,40 @@ export default function MainPage() {
     }
 
     const addCountry = () => {
-        const copyCountries = [...countries];
+        // const copyCountries = [...countries];
 
-        const validate = validateAddInput(copyCountries, countryInfo);
+        // const validate = validateAddInput(copyCountries, countryInfo);
 
-        if (!validate.isValid) {
-            validateAlertMessage(validate);
-            return;
-        }
+        // if (!validate.isValid) {
+        //     validateAlertMessage(validate);
+        //     return;ㅖ
+        // }
 
-        copyCountries.push(countryInfo);
-        copyCountries.sort((a, b) => b.gold - a.gold);
-        setCountries(copyCountries);
-        // 함수로 setState 사용? useState의 callback 함수 (setState callback 함수  react.docs)
+        // copyCountries.push(countryInfo);
+        // copyCountries.sort((a, b) => b.gold - a.gold);
+        // setCountries(copyCountries);
+
         // https://react.dev/learn/queueing-a-series-of-state-updates
-        clearInput();
+        // 확실한 최신값을 사용할 수 있다. (setState의 callback에서 작업하면 그 callback의 인자에는 확실한 최신값이 들어있음)
+        setCountries((arr) => {
+            const copyArr = [...arr];
+
+            const validate = validateAddInput(copyArr, countryInfo);
+
+            if (!validate.isValid) {
+                validateAlertMessage(validate);
+                return copyArr;
+            }
+
+            copyArr.push(countryInfo);
+            copyArr.sort((a, b) => b.gold - a.gold);
+            clearInput();
+            return copyArr;
+        })
+        // setcountries의 작업이 끝나기 전에 다음 코드가 실행될 수 있는데
+        // 나중에 useEffect() 쓰면 ㅇㅋ
+
+        // clearInput();
     }
 
     const updateCountry = () => {
@@ -43,21 +62,17 @@ export default function MainPage() {
             return;
         }
 
-
-        // some ? 
-        const copyCountries = [...countries].map(cur => {
-
-            if (cur.name === countryInfo.name) {
-                return countryInfo;
-            }
-            return cur;
+        setCountries((arr) => {
+            // some ? 
+            const copyArr = [...arr].map(cur => {
+                if (cur.name === countryInfo.name) return countryInfo
+                return cur;
+            })
+            copyArr.sort((a, b) => b.gold - a.gold);
+            clearInput();
+            return copyArr;
         })
-
-        copyCountries.sort((a, b) => b.gold - a.gold);
-        setCountries(copyCountries);
-        clearInput();
     }
-
 
     const clearInput = () => {
         setCountryInfo(INITIAL_STATE)
@@ -67,7 +82,6 @@ export default function MainPage() {
         const filteredCountries = countries.filter(cur => country.name !== cur.name);
         setCountries(filteredCountries);
     }
-
 
     return (
         <>
