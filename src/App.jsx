@@ -11,7 +11,7 @@ class Country {
 }
 
 function App() {
-  const [countries, setCountry] = useState([]);
+  const [countries, setCountries] = useState([]);
 
   const [name, setName] = useState("");
   const [g, setG] = useState(0);
@@ -33,7 +33,7 @@ function App() {
 
     copyCountries.push(country);
     copyCountries.sort((a, b) => b.g - a.g);
-    setCountry(copyCountries);
+    setCountries(copyCountries);
     clearInput();
   }
 
@@ -53,15 +53,16 @@ function App() {
     })
 
     copyCountries.sort((a, b) => b.g - a.g);
-    setCountry(copyCountries);
+    setCountries(copyCountries);
     clearInput();
   }
 
   const checkInput = (type, copyCountries, { name, ...medals }) => {
     const filterdMedal = Object.values(medals).filter(m => m > 0)[0]
-    const duplicateName = copyCountries.filter(country => {
+    const filteredCountris = copyCountries.filter(country => {
       return country.name === name
-    })[0]?.name;
+    });
+    const duplicateName = filteredCountris[0]?.name;
 
 
     if (type === 'add') {
@@ -82,11 +83,16 @@ function App() {
     setB(0);
   }
 
+  const removeCountry = (country) => {
+    const filteredCountris = countries.filter(cur => country.name !== cur.name);
+    setCountries(filteredCountris);
+  }
+
 
   return (
     <>
       <div className='main-container'>
-        <h2>24024 파리 올림픽</h2>
+        <h2>2024 파리 올림픽</h2>
         <div className='input-container'>
           <div className='input-box'>
             <p>국가명</p>
@@ -104,35 +110,60 @@ function App() {
             <p>동</p>
             <input type="number" value={b} onChange={(e) => { updateMedal(e, setB) }} />
           </div>
-          <button onClick={addCountry}>국가 추가</button>
-          <button onClick={updateCountry}>업데이트</button>
+          <div className='input-box'>
+            <button onClick={addCountry}>국가추가</button>
+            <button onClick={updateCountry}>업데이트</button>
+          </div>
         </div>
-      </div>
-      <div className='list-container'>
-        {countries.map(country => <List country={country} />)}
+        <div className='list-container'>
+          {!countries.length && <Empty />}
+          {(countries.length > 0 && <CountryHeader />)}
+          {countries.map(country => <List country={country} removeCountry={removeCountry} />)}
+        </div>
       </div>
     </>
   )
 }
 
+const Empty = () => {
+  return (
+    <div style={{ color: 'black' }}>
+      <p>데이터가 없슴</p>
+    </div>
+  )
+}
 
-const List = ({ country }) => {
+const CountryHeader = () => {
+  return (
+    <div className='country-header'>
+      <div className="header-box"><h4>국가명</h4></div>
+      <div className="header-box"><h4>금</h4></div>
+      <div className="header-box"><h4>은</h4></div>
+      <div className="header-box"><h4>동</h4></div>
+      <div className="header-box"><h4>액션</h4></div>
+    </div>
+  )
+}
+
+
+const List = ({ country, removeCountry }) => {
+
   return (
     <div className='country-container'>
       <div className='info-box'>
-        {country.name}
+        <p>{country.name}</p>
       </div>
       <div className='info-box'>
-        {country.g}
+        <p>{country.g}</p>
       </div>
       <div className='info-box'>
-        {country.s}
+        <p>{country.s}</p>
       </div>
       <div className='info-box'>
-        {country.b}
+        <p>{country.b}</p>
       </div>
       <div className='info-box'>
-        <button onClick={''}>삭제</button>
+        <button onClick={(e) => removeCountry(country)}>삭제</button>
       </div>
     </div>
   )
