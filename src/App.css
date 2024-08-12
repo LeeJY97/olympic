@@ -60,7 +60,7 @@ input {
   padding: 5px;
 }
 
-.input-container button {
+/* .input-container button {
   background-color: rgb(255, 153, 0);
   border: none;
   width: 60px;
@@ -68,7 +68,7 @@ input {
   color: black;
   font-weight: 900;
   border-radius: 5px;
-}
+} */
 
 
 .list-container {
@@ -129,6 +129,7 @@ input {
   height: 40px;
 }
 
+/* 
 .country-container button {
   background-color: rgb(230, 40, 87);
   border: none;
@@ -137,4 +138,4 @@ input {
   color: rgb(218, 218, 218);
   font-weight: 900;
   border-radius: 5px;
-}
+} */
