@@ -3,36 +3,8 @@ import MedalSummary from '../components/MedalSummary'
 import ButtonComponent from '../components/ButtonComponent'
 import { DivInputBox, FormInput } from '../components/InputBox'
 import { validateAddInput, validateUpdateInput, validateAlertMessage } from '../assets/common'
-
-const INITIAL_STATE = {
-    name: '',
-    gold: 0,
-    silver: 0,
-    bronze: 0,
-}
-
-const FORM_INPUT_PROPERTIES = [
-    {
-        title: '국가명',
-        type: 'text',
-        property: 'name',
-    },
-    {
-        title: '금',
-        type: 'number',
-        property: 'gold',
-    },
-    {
-        title: '은',
-        type: 'number',
-        property: 'silver',
-    },
-    {
-        title: '동',
-        type: 'number',
-        property: 'bronze',
-    },
-]
+import constants from '../assets/constants'
+const { INITIAL_STATE, FORM_INPUT_PROPERTIES } = constants;
 
 export default function MainPage() {
     const [countries, setCountries] = useState([]);
