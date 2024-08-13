@@ -18,5 +18,6 @@ border-radius: 5px;
 color: ${(props) => props.type === 'primary' ? 'black' : 'white'};
 background-color: ${(props) => props.type === 'primary' ? 'rgb(255, 153, 0)' : 'rgb(230, 40, 87)'};
 `
+
 // type switch로 나눠보기
 export default ButtonComponent;

@@ -4,7 +4,10 @@ const INITIAL_VALIDATE = {
 }
 
 const validateAddInput = (copyCountries, { name, ...medals }) => {
-    const validate = { ...INITIAL_VALIDATE }
+    const validate = {
+        isValid: true,
+        message: ''
+    }
     const filteredMedal = Object.values(medals).filter(m => m > 0)[0]
     const duplicateCountry = copyCountries.findIndex(country => name === country.name);
 

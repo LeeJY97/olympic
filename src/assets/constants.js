@@ -5,6 +5,8 @@ const INITIAL_STATE = {
     bronze: 0,
 }
 
+// 확장성 좋음.
+// ex) title값을 수정하면 모든 코드에서 적용되는 장점
 const FORM_INPUT_PROPERTIES = [
     {
         title: '국가명',

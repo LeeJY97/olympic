@@ -18,40 +18,17 @@ export default function MainPage() {
     }
 
     const addCountry = () => {
-        // const copyCountries = [...countries];
+        const validate = validateAddInput([...countries], countryInfo);
 
-        // const validate = validateAddInput(copyCountries, countryInfo);
+        if (!validate.isValid) {
+            validateAlertMessage(validate);
+            return;
+        }
 
-        // if (!validate.isValid) {
-        //     validateAlertMessage(validate);
-        //     return;ㅖ
-        // }
-
-        // copyCountries.push(countryInfo);
-        // copyCountries.sort((a, b) => b.gold - a.gold);
-        // setCountries(copyCountries);
-
-        // https://react.dev/learn/queueing-a-series-of-state-updates
-        // 확실한 최신값을 사용할 수 있다. (setState의 callback에서 작업하면 그 callback의 인자에는 확실한 최신값이 들어있음)
-        setCountries((arr) => {
-            const copyArr = [...arr];
-
-            const validate = validateAddInput(copyArr, countryInfo);
-
-            if (!validate.isValid) {
-                validateAlertMessage(validate);
-                return copyArr;
-            }
-
-            copyArr.push(countryInfo);
-            copyArr.sort((a, b) => b.gold - a.gold);
-            clearInput();
-            return copyArr;
-        })
+        setCountries([...countries, countryInfo].sort((a, b) => b.gold - a.gold));
+        clearInput();
         // setcountries의 작업이 끝나기 전에 다음 코드가 실행될 수 있는데
         // 나중에 useEffect() 쓰면 ㅇㅋ
-
-        // clearInput();
     }
 
     const updateCountry = () => {
