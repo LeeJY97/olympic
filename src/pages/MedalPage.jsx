@@ -50,15 +50,16 @@ export default function MainPage() {
             return copyArr;
         })
     }
+    const removeCountry = (country) => {
+        const filteredCountries = countries.filter(cur => country.name !== cur.name);
+        setCountries(filteredCountries);
+    }
+
 
     const clearInput = () => {
         setCountryInfo(INITIAL_STATE)
     }
 
-    const removeCountry = (country) => {
-        const filteredCountries = countries.filter(cur => country.name !== cur.name);
-        setCountries(filteredCountries);
-    }
 
     return (
         <>

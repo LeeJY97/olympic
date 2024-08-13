@@ -19,5 +19,9 @@ color: ${(props) => props.type === 'primary' ? 'black' : 'white'};
 background-color: ${(props) => props.type === 'primary' ? 'rgb(255, 153, 0)' : 'rgb(230, 40, 87)'};
 `
 
+// props를 받아서 조건 등을 사용하기 편해서 사용 (리액트 친화적)
+// 웹폰트나, 공통적인 것들은 sass 로 사용
+// 통일해도 상관 x
+
 // type switch로 나눠보기
 export default ButtonComponent;
