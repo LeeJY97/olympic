@@ -30,4 +30,6 @@ const FORM_INPUT_PROPERTIES = [
     },
 ]
 
+
+
 export default { INITIAL_STATE, FORM_INPUT_PROPERTIES };

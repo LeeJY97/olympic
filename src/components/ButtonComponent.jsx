@@ -6,6 +6,28 @@ function ButtonComponent({ onClick, text, type }) {
     )
 }
 
+const getButtonColor = (type) => {
+    switch (type) {
+        case 'primary':
+            return 'black';
+        case 'warning':
+            return 'white';
+        default:
+            return 'black';
+    }
+}
+
+const getButtonBackGround = (type) => {
+    switch (type) {
+        case 'primary':
+            return 'rgb(255, 153, 0)';
+        case 'warning':
+            return 'rgb(230, 40, 87)';
+        default:
+            return 'black';
+    }
+}
+
 // 이건 본인 컴포넌트에서 정의 하는 것 ?
 const StyledButton = styled.button`
 border: none;
@@ -15,7 +37,7 @@ font-weight: 900;
 border-radius: 5px;
 
 
-color: ${(props) => props.type === 'primary' ? 'black' : 'white'};
+color: ${(props) => getButtonColor(props.type)};
 background-color: ${(props) => props.type === 'primary' ? 'rgb(255, 153, 0)' : 'rgb(230, 40, 87)'};
 `
 
